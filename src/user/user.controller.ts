@@ -5,6 +5,7 @@ import {
   Post,
   UseGuards,
   Request,
+  Param,
 } from '@nestjs/common';
 import { IResultDto } from 'src/dto/result.dto';
 import { IUserCreateDto } from './dto/user.create.dto';
@@ -24,6 +25,12 @@ export class UserController {
   @Get()
   async findAll(): Promise<User[]> {
     return this.userService.findAll();
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get(':email')
+  async findOne(@Param('email') email: string): Promise<IResultDto> {
+    return this.userService.findOneUser(email);
   }
 
   @Post()
